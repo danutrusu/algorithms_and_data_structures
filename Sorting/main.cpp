@@ -1,8 +1,37 @@
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 void print_arr(int *arr,int n);
 int* read_arr(int length);
+
+//--------- quicksort start-----------//
+void quick_sort(int *arr, int left, int right)
+{
+    int i = left, j = right;
+    int pivot = arr [ (left+right)/2 ];
+    while(i <= j) {
+        while(arr[i] < pivot) {
+            i++;
+        }
+        while(arr[j] > pivot) {
+            j--;
+        }
+
+        if (i <= j) {
+            swap(arr[i++],arr[j--]);
+        }
+    }
+
+    if (i < right) {
+        quick_sort(arr, i, right);
+    }
+
+    if (j > left) {
+        quick_sort(arr, left, j);
+    }
+}
+//--------- quicksort stop-----------//
 
 //--------- mergesort start-----------//
 void merge(int *arr,int left,int mid,int right)
@@ -54,8 +83,16 @@ int main() {
     int *array, length;
     cin >> length;
     array = read_arr(length);
+
     mergesort(array, length - 1);
+
     print_arr(array,length);
+    random_shuffle(&array[0],&array[length]);
+
+    quick_sort(array,0,length-1);
+
+    print_arr(array,length);
+
     return 0;
 }
 
